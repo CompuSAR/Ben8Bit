@@ -88,6 +88,15 @@ register reg_out(
     .bReset(bReset)
 );
 
+wire [3:0]memory_address_value;
+register#(.DataBits(4)) memory_address_register(
+    .data_in(bus),
+    .data_out(memory_address_value),
+    .clock(clock),
+    .write_enable(register_memory_address_write),
+    .bReset(bReset)
+);
+
 wire [7:0]instruction_register_data;
 register instruction_register(
     .data_in(bus),
@@ -104,6 +113,7 @@ reg register_a_write;
 reg alu_subtract;
 reg register_b_write;
 reg register_out_write;
+reg register_memory_address_write;
 reg intruction_register_write;
 
 // Flags
@@ -129,6 +139,7 @@ begin
     alu_subtract <= 0;
     register_b_write <= 0;
     register_out_write <= 0;
+    register_memory_address_write <= 0;
 end
 endtask
 
