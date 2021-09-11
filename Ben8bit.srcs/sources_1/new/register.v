@@ -20,15 +20,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module register(
-    input [7:0] data_in,
-    output [7:0] data_out,
+module register#(parameter DataBits = 8)(
+    input [DataBits-1:0] data_in,
+    output [DataBits-1:0] data_out,
     input clock,
     input write_enable,
     input bReset
     );
     
-reg [7:0]data;
+reg [DataBits-1:0]data;
 assign data_out = data;
 
 always@(posedge clock, negedge bReset)
