@@ -33,7 +33,8 @@ localparam BusIn_ALU = 3;
 localparam BusIn_PC = 4;
 localparam BusIn_MemoryAddress = 5;
 localparam BusIn_Memory = 6;
-localparam BusIn_NumOptions = 7;
+localparam BusIn_InstructionRegister = 7;
+localparam BusIn_NumOptions = 8;
 
 wire [7:0]bus;
 reg [$clog2(BusIn_NumOptions-1)-1:0] bus_selector;
@@ -67,6 +68,17 @@ register reg_out(
     .write_enable(register_out_write),
     .bReset(bReset)
 );
+
+reg intruction_register_write;
+wire [7:0]instruction_register_data;
+register instruction_register(
+    .data_in(bus),
+    .data_out(instruction_register_data),
+    .clock(clock),
+    .write_enable(instruction_register_write),
+    .bReset(bReset)
+);
+assign bus_inputs[BusIn_InstructionRegister] = {{4{0}}, instruction_register_data[3:0]};
 
 initial
     reset_everything();
