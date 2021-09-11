@@ -59,6 +59,14 @@ register reg_b(
     .write_enable(register_b_write),
     .bReset(bReset)
 );
+reg register_out_write;
+register reg_out(
+    .data_in(bus),
+    .data_out(out),
+    .clock(clock),
+    .write_enable(register_out_write),
+    .bReset(bReset)
+);
 
 initial
     reset_everything();
@@ -74,6 +82,7 @@ begin
     bus_selector <= BusIn_None;
     register_a_write = 0;
     register_b_write = 0;
+    register_out_write = 0;
 end
 endtask
 
