@@ -4,10 +4,9 @@
 `define BusIn_ALU 3
 `define BusIn_RegB 4
 
-`define BusIn_MemoryAddress 5
-`define BusIn_Memory 6
-`define BusIn_InstructionRegister 7
+`define BusIn_Memory 5
+`define BusIn_InstructionRegister 6
 
-`define BusIn_NumOptions 8
+`define BusIn_NumOptions 7
 
 `define BusSelectorBits $clog2(`BusIn_NumOptions-1)

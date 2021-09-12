@@ -43,6 +43,14 @@ module top(
         .bReset(bReset)
     );
 
+    ram ram(
+        .a(memory_address_value),
+        .d(bus),
+        .clk( ~clock ),
+        .we( ctl_ram_in ),
+        .spo( bus_inputs[`BusIn_Memory] )
+    );
+
     wire [7:0]instruction_register_value;
     register instruction_register(
         .data_in(bus),
