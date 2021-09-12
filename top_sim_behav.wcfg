@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="top_sim_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="top_sim" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="6.641666 us"></ZoomStartTime>
+      <ZoomEndTime time="13.071667 us"></ZoomEndTime>
+      <Cursor1Time time="12.000000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="276"></NameColumnWidth>
+      <ValueColumnWidth column_width="80"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="10" />
+   <wvobject type="logic" fp_name="/top_sim/clock">
+      <obj_property name="ElementShortName">clock</obj_property>
+      <obj_property name="ObjectShortName">clock</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/top_sim/reset">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_sim/out">
+      <obj_property name="ElementShortName">out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_sim/testee/bus">
+      <obj_property name="ElementShortName">bus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">bus[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_sim/testee/bus_inputs">
+      <obj_property name="ElementShortName">bus_inputs[6:0][7:0]</obj_property>
+      <obj_property name="ObjectShortName">bus_inputs[6:0][7:0]</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/top_sim/testee/bus_inputs[6]">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[6][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[6][7:0]</obj_property>
+         <obj_property name="label">InstReg</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_sim/testee/bus_inputs[5]">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[5][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[5][7:0]</obj_property>
+         <obj_property name="label">Memory</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_sim/testee/bus_inputs[4]">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[4][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[4][7:0]</obj_property>
+         <obj_property name="label">RegB</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_sim/testee/bus_inputs[3]">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[3][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[3][7:0]</obj_property>
+         <obj_property name="label">ALU</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_sim/testee/bus_inputs[2]">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[2][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[2][7:0]</obj_property>
+         <obj_property name="label">RegA</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_sim/testee/bus_inputs[1]">
+         <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="ElementShortName">[1][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[1][7:0]</obj_property>
+         <obj_property name="label">PC</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/top_sim/testee/bus_inputs[0]">
+         <obj_property name="ElementShortName">[0][7:0]</obj_property>
+         <obj_property name="ObjectShortName">[0][7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_sim/testee/memory_address_value">
+      <obj_property name="ElementShortName">memory_address_value[3:0]</obj_property>
+      <obj_property name="ObjectShortName">memory_address_value[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_sim/testee/program_counter/data">
+      <obj_property name="ElementShortName">data[3:0]</obj_property>
+      <obj_property name="ObjectShortName">data[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_sim/testee/control/step">
+      <obj_property name="ElementShortName">step[2:0]</obj_property>
+      <obj_property name="ObjectShortName">step[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_sim/testee/instruction_register_value">
+      <obj_property name="ElementShortName">instruction_register_value[7:0]</obj_property>
+      <obj_property name="ObjectShortName">instruction_register_value[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/top_sim/testee/alu/expanded_result">
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="ElementShortName">expanded_result[8:0]</obj_property>
+      <obj_property name="ObjectShortName">expanded_result[8:0]</obj_property>
+      <obj_property name="label">ALU expanded_result[8:0]</obj_property>
+   </wvobject>
+</wave_config>

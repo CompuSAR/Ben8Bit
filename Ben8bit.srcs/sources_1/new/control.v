@@ -23,7 +23,7 @@
 
 module control
 (
-    input [7:4] instruction,
+    input [3:0] instruction,
     input clock,
     input bReset,
     input carry_flag,
@@ -63,8 +63,6 @@ begin
                 perform_ins_lda();
             else if( instruction==4'b0010 )
                 perform_ins_add();
-            else if( instruction==4'b0011 )
-                perform_ins_sub();
             else if( instruction==4'b0011 )
                 perform_ins_sub();
             else if( instruction==4'b0100 )

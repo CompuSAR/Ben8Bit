@@ -30,7 +30,7 @@ module alu#(parameter DataBits = 8)(
     );
 
 wire [DataBits:0]expanded_result;
-assign expanded_result = a+(sub_bAdd ? b : ~b + 1);
+assign expanded_result = a+(sub_bAdd ? ~b + 1 : b);
 assign result = expanded_result[DataBits-1:0];
 assign carry_flag = expanded_result[DataBits];
 assign zero_flag = expanded_result[DataBits-1:0] == 0;

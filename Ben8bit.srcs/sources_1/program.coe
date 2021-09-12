@@ -1,3 +1,9 @@
 memory_initialization_radix=16;
-memory_initialization_vector=
-    F0; // Hlt
+memory_initialization_vector= 1F, 2E, 4D, E0, F0, 00, 00, 00, 00, 00, 00, 00, 00, 00, 19, 11;
+; 0 - LDA 15
+; 1 - ADD 14
+; 2 - STA 13
+; 3 - OUT
+; 4 - Hlt
+; E - 25
+; F - 17

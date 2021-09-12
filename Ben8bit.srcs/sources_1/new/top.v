@@ -46,7 +46,7 @@ module top(
     ram ram(
         .a(memory_address_value),
         .d(bus),
-        .clk( ~clock ),
+        .clk( clock ),
         .we( ctl_ram_in ),
         .spo( bus_inputs[`BusIn_Memory] )
     );
@@ -79,7 +79,7 @@ module top(
     reg carry_flag;
     reg zero_flag;
     control control(
-        .instruction(instruction_register_value),
+        .instruction(instruction_register_value[7:4]),
         .clock(clock),
         .bReset(bReset),
         .carry_flag(carry_flag),
