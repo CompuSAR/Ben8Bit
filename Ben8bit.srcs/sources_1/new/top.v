@@ -19,128 +19,130 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+`include "control.vh"
 
 module top(
     output [7:0] out,
     input clock,
     input bReset
+);
+
+    wire [7:0]bus;
+
+    wire [7:0]bus_inputs[`BusIn_NumOptions-1:0];
+    assign bus = bus_inputs[ctl_bus_selector];
+
+    assign bus_inputs[`BusIn_None] = 0;
+
+    wire [3:0]memory_address_value;
+    register#(.DataBits(4)) memory_address_register(
+        .data_in(bus),
+        .data_out(memory_address_value),
+        .clock(clock),
+        .write_enable(ctl_memory_in),
+        .bReset(bReset)
     );
 
-localparam BusIn_None = 0;
-localparam BusIn_PC = 1;
-localparam BusIn_RegA = 2;
-localparam BusIn_ALU = 3;
-localparam BusIn_RegB = 4;
+    wire [7:0]instruction_register_value;
+    register instruction_register(
+        .data_in(bus),
+        .data_out(instruction_register_value),
+        .clock(clock),
+        .write_enable(ctl_instruction_in),
+        .bReset(bReset)
+    );
+    assign bus_inputs[`BusIn_InstructionRegister] = {4'b0, instruction_register_value[3:0]};
 
-localparam BusIn_MemoryAddress = 5;
-localparam BusIn_Memory = 6;
-localparam BusIn_InstructionRegister = 7;
-localparam BusIn_NumOptions = 8;
+    // Control lines
+    wire ctl_hlt;
+    wire ctl_memory_in;
+    wire ctl_ram_in;
+    wire ctl_instruction_in;
+    wire ctl_reg_a_in;
+    wire ctl_subtract;
+    wire ctl_reg_b_in;
+    wire ctl_out_in;
+    wire ctl_advance_pc;
+    wire ctl_pc_in;
+    wire ctl_flags_in;
+    wire [`BusSelectorBits-1:0]ctl_bus_selector;
 
-wire [7:0]bus;
-reg [$clog2(BusIn_NumOptions-1)-1:0] bus_selector;
+    // Flags
+    reg carry_flag;
+    reg zero_flag;
+    control control(
+        .instruction(instruction_register_value),
+        .clock(clock),
+        .bReset(bReset),
+        .carry_flag(carry_flag),
+        .zero_flag(zero_flag),
 
-wire [7:0]bus_inputs[BusIn_NumOptions-1:0];
-assign bus = bus_inputs[bus_selector];
+        // Control lines
+        .hlt(ctl_hlt),
+        .memory_in(ctl_memory_in),
+        .ram_in(ctl_ram_in),
+        .instruction_in(ctl_instruction_in),
+        .reg_a_in(ctl_reg_a_in),
+        .subtract(ctl_subtract),
+        .reg_b_in(ctl_reg_b_in),
+        .out_in(ctl_out_in),
+        .advance_pc(ctl_advance_pc),
+        .pc_in(ctl_pc_in),
+        .flags_in(ctl_flags_in),
+        .bus_selector(ctl_bus_selector)
+    );
 
-assign bus_inputs[BusIn_None] = 0;
+    wire [3:0]program_counter_value;
+    register#(.DataBits(4)) program_counter(
+        .data_in( program_counter_value+1 ),
+        .data_out( program_counter_value ),
+        .clock(clock),
+        .write_enable(ctl_advance_pc),
+        .bReset(bReset)
+    );
+    assign bus_inputs[`BusIn_PC] = {4'b0, program_counter_value};
 
-wire [3:0]program_counter_value;
-register#(.DataBits(4)) program_counter(
-    .data_in( program_counter_value+1 ),
-    .data_out( program_counter_value ),
-    .clock(clock),
-    .write_enable(program_counter_update),
-    .bReset(bReset)
-);
-assign bus_inputs[BusIn_PC] = {{4{0}}, program_counter_value};
+    register reg_a(
+        .data_in(bus),
+        .data_out(bus_inputs[`BusIn_RegA]),
+        .clock(clock),
+        .write_enable(ctl_reg_a_in),
+        .bReset(bReset)
+    );
 
-register reg_a(
-    .data_in(bus),
-    .data_out(bus_inputs[BusIn_RegA]),
-    .clock(clock),
-    .write_enable(register_a_write),
-    .bReset(bReset)
-);
+    wire carry_flag_value, zero_flag_value;
+    alu alu(
+        .a(bus_inputs[`BusIn_RegA]),
+        .b(bus_inputs[`BusIn_RegB]),
+        .result(bus_inputs[`BusIn_ALU]),
+        .sub_bAdd(alu_subtract),
+        .carry_flag(carry_flag_value),
+        .zero_flag(zero_flag_value)
+    );
 
-wire carry_flag_value, zero_flag_value;
-alu alu(
-    .a(bus_inputs[BusIn_RegA]),
-    .b(bus_inputs[BusIn_RegB]),
-    .result(bus_inputs[BusIn_ALU]),
-    .sub_bAdd(alu_subtract),
-    .carry_flag(carry_flag_value),
-    .zero_flag(zero_flag_value)
-);
+    register reg_b(
+        .data_in(bus),
+        .data_out(bus_inputs[`BusIn_RegB]),
+        .clock(clock),
+        .write_enable(ctl_reg_b_in),
+        .bReset(bReset)
+    );
+    register reg_out(
+        .data_in(bus),
+        .data_out(out),
+        .clock(clock),
+        .write_enable(ctl_out_in),
+        .bReset(bReset)
+    );
 
-register reg_b(
-    .data_in(bus),
-    .data_out(bus_inputs[BusIn_RegB]),
-    .clock(clock),
-    .write_enable(register_b_write),
-    .bReset(bReset)
-);
-register reg_out(
-    .data_in(bus),
-    .data_out(out),
-    .clock(clock),
-    .write_enable(register_out_write),
-    .bReset(bReset)
-);
-
-wire [3:0]memory_address_value;
-register#(.DataBits(4)) memory_address_register(
-    .data_in(bus),
-    .data_out(memory_address_value),
-    .clock(clock),
-    .write_enable(register_memory_address_write),
-    .bReset(bReset)
-);
-
-wire [7:0]instruction_register_data;
-register instruction_register(
-    .data_in(bus),
-    .data_out(instruction_register_data),
-    .clock(clock),
-    .write_enable(instruction_register_write),
-    .bReset(bReset)
-);
-assign bus_inputs[BusIn_InstructionRegister] = {{4{0}}, instruction_register_data[3:0]};
-
-// Control lines
-reg program_counter_update;
-reg register_a_write;
-reg alu_subtract;
-reg register_b_write;
-reg register_out_write;
-reg register_memory_address_write;
-reg intruction_register_write;
-
-// Flags
-reg carry_flag;
-reg zero_flag;
-
-initial
+    initial
     reset_everything();
 
-task reset_everything();
-begin
-    reset_controls();
-    carry_flag <= 0;
-    zero_flag <= 0;
-end
-endtask
-
-task reset_controls();
-begin
-    bus_selector <= BusIn_None;
-    program_counter_update <= 0;
-    register_a_write <= 0;
-    alu_subtract <= 0;
-    register_b_write <= 0;
-    register_out_write <= 0;
-    register_memory_address_write <= 0;
-end
-endtask
+    task reset_everything();
+        begin
+            carry_flag <= 0;
+            zero_flag <= 0;
+        end
+    endtask
 
 endmodule
