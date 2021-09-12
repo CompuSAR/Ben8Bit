@@ -123,7 +123,7 @@ module top(
         .a(bus_inputs[`BusIn_RegA]),
         .b(bus_inputs[`BusIn_RegB]),
         .result(bus_inputs[`BusIn_ALU]),
-        .sub_bAdd(alu_subtract),
+        .sub_bAdd(ctl_subtract),
         .carry_flag(carry_flag_value),
         .zero_flag(zero_flag_value)
     );
