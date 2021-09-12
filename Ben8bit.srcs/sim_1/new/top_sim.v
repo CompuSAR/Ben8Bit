@@ -29,7 +29,7 @@ reg reset;
 wire [7:0] out;
 
 top testee(
-    .clock(clock),
+    .clock_in(clock),
     .bReset(reset),
     .out(out)
 );
@@ -46,6 +46,8 @@ end
 initial begin
     #3002 reset = 1;
     
+    #50007 reset = 0;
+    #10 reset = 1;
 end
 
 endmodule

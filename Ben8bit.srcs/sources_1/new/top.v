@@ -23,7 +23,7 @@
 
 module top(
     output [7:0] out,
-    input clock,
+    input clock_in,
     input bReset
 );
 
@@ -33,6 +33,8 @@ module top(
     assign bus = bus_inputs[ctl_bus_selector];
 
     assign bus_inputs[`BusIn_None] = 0;
+
+    wire clock = clock_in || ctl_hlt;
 
     wire [3:0]memory_address_value;
     register#(.DataBits(4)) memory_address_register(
